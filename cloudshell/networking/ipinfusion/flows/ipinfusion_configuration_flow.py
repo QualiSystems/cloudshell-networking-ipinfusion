@@ -1,16 +1,16 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-from cloudshell.shell.flows.configuration.basic_flow import AbstractConfigurationFlow
-from cloudshell.shell.flows.utils.networking_utils import UrlParser
 
 from cloudshell.networking.ipinfusion.command_actions.save_restore_actions import (
     SaveRestoreActions,
 )
-from cloudshell.networking.ipinfusion.command_actions.system_actions import \
-    SystemActions
-from cloudshell.networking.ipinfusion.helpers.exceptions import \
-    IPInfusionSaveRestoreException
+from cloudshell.networking.ipinfusion.command_actions.system_actions import (
+    SystemActions,
+)
+from cloudshell.networking.ipinfusion.helpers.exceptions import (
+    IPInfusionSaveRestoreException,
+)
+from cloudshell.shell.flows.configuration.basic_flow import AbstractConfigurationFlow
+from cloudshell.shell.flows.utils.networking_utils import UrlParser
 
 
 class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
@@ -19,7 +19,7 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
     REMOTE_PROTOCOLS = ["ftp", "tftp", "scp"]
 
     def __init__(self, cli_handler, resource_config, logger):
-        super(IPInfusionConfigurationFlow, self).__init__(logger, resource_config)
+        super().__init__(logger, resource_config)
         self._cli_handler = cli_handler
 
     @property
@@ -55,16 +55,18 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
             )
 
         with self._cli_handler.get_cli_service(
-                self._cli_handler.enable_mode
+            self._cli_handler.enable_mode
         ) as enable_session:
             save_action = SaveRestoreActions(enable_session, self._logger)
             system_action = SystemActions(enable_session, self._logger)
 
             if scheme in self.REMOTE_PROTOCOLS:
-                save_action.save_configuration_to_remote(conf_type=configuration_type,
-                                                         protocol_type=scheme,
-                                                         destination=folder_path,
-                                                         vrf=vrf_management_name)
+                save_action.save_configuration_to_remote(
+                    conf_type=configuration_type,
+                    protocol_type=scheme,
+                    destination=folder_path,
+                    vrf=vrf_management_name,
+                )
             else:
                 if configuration_type == "running-config":
                     filename = url.get("filename", self.DEFAULT_CONFIG_NAME)
@@ -78,7 +80,7 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
                     raise IPInfusionSaveRestoreException("")
 
     def _restore_flow(
-            self, path, configuration_type, restore_method, vrf_management_name
+        self, path, configuration_type, restore_method, vrf_management_name
     ):
         """Execute flow which save selected file to the provided destination.
 
@@ -113,10 +115,9 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
             )
 
         with self._cli_handler.get_cli_service(
-                self._cli_handler.enable_mode
+            self._cli_handler.enable_mode
         ) as enable_session:
             save_action = SaveRestoreActions(enable_session, self._logger)
-            # system_action = SystemActions(enable_session, self._logger)
 
             if configuration_type == "startup-config":
                 append = False
@@ -130,12 +131,14 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
 
             if scheme in self.REMOTE_PROTOCOLS:
                 "copy {protocol_type} {src} {dst} [append{append}] store vrf {vrf}"
-                save_action.load_configuration_from_remote(conf_type=configuration_type,
-                                                           protocol_type=scheme,
-                                                           source=path,
-                                                           append=append,
-                                                           store=store,
-                                                           vrf=vrf_management_name)
+                save_action.load_configuration_from_remote(
+                    conf_type=configuration_type,
+                    protocol_type=scheme,
+                    source=path,
+                    append=append,
+                    store=store,
+                    vrf=vrf_management_name,
+                )
             else:
                 "copy file {file_path} {config} [append{append}] [store{store}]"
                 filename = url.get("filename", self.DEFAULT_CONFIG_NAME)
@@ -143,7 +146,9 @@ class IPInfusionConfigurationFlow(AbstractConfigurationFlow):
                 if not config_path.endswith("/"):
                     config_path += "/"
                 full_path = "/".join([config_path, filename])  # not os.path.join
-                save_action.load_configuration_from_local(file_path=full_path,
-                                                          conf_type=configuration_type,
-                                                          append=append,
-                                                          store=store)
+                save_action.load_configuration_from_local(
+                    file_path=full_path,
+                    conf_type=configuration_type,
+                    append=append,
+                    store=store,
+                )

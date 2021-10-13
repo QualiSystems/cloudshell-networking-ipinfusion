@@ -1,10 +1,10 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 from cloudshell.cli.command_template.command_template import CommandTemplate
 
 SHOW_SNMP_CONFIGURATION = CommandTemplate(
-    "do show running-config | include snmp-server")
+    "do show running-config | include snmp-server"
+)
 
 ENABLE_SNMP = CommandTemplate("snmp-server enable snmp vrf {vrf}")
 DISABLE_SNMP = CommandTemplate("no snmp-server enable snmp vrf {vrf}")

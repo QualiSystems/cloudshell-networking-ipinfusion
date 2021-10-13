@@ -1,15 +1,11 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-from cloudshell.networking.ipinfusion.command_actions.enable_disable_snmp_actions import (
+from cloudshell.networking.ipinfusion.command_actions.enable_disable_snmp_actions import (  # noqa: E501
     EnableDisableSnmpActions,
-)
-from cloudshell.networking.ipinfusion.command_actions.system_actions import (
-    SystemActions as SystemActions,
 )
 from cloudshell.networking.ipinfusion.helpers.exceptions import IPInfusionSNMPException
 
 
-class IPInfusionDisableSnmpFlow(object):
+class IPInfusionDisableSnmpFlow:
     def __init__(self, cli_handler, logger):
         """Disable SNMP flow."""
         self._cli_handler = cli_handler
@@ -22,12 +18,14 @@ class IPInfusionDisableSnmpFlow(object):
             raise IPInfusionSNMPException(message)
 
         with self._cli_handler.get_cli_service(
-                self._cli_handler.config_mode) as config_session:
+            self._cli_handler.config_mode
+        ) as config_session:
             snmp_actions = EnableDisableSnmpActions(config_session, self._logger)
             if "3" in snmp_parameters.version:
-                snmp_actions.remove_snmp_v3(snmp_user=snmp_parameters.snmp_user,
-                                            vrf=vrf)
+                snmp_actions.remove_snmp_v3(
+                    snmp_user=snmp_parameters.snmp_user, vrf=vrf
+                )
             else:
                 snmp_actions.remove_snmp_comminity(
-                    community=snmp_parameters.snmp_community,
-                    vrf=vrf)
+                    community=snmp_parameters.snmp_community, vrf=vrf
+                )

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 import re
 import time
@@ -60,9 +59,7 @@ class ConfigCommandMode(CommandMode):
     ENTER_ACTION_COMMANDS = []
 
     def __init__(self, resource_config):
-        """Initialize Config command mode.
-        :param resource_config:
-        """
+        """Initialize Config command mode."""
         self.resource_config = resource_config
 
         CommandMode.__init__(
@@ -75,7 +72,7 @@ class ConfigCommandMode(CommandMode):
         )
 
     def enter_action_map(self):
-        return {r"{}.*$".format(EnableCommandMode.PROMPT): self._check_config_mode}
+        return {fr"{EnableCommandMode.PROMPT}.*$": self._check_config_mode}
 
     def exit_action_map(self):
         return {self.PROMPT: lambda session, logger: session.send_line("exit", logger)}
@@ -88,7 +85,7 @@ class ConfigCommandMode(CommandMode):
         error_message = "Failed to enter config mode, please check logs, for details"
         output = session.hardware_expect(
             "",
-            expected_string="{0}|{1}".format(
+            expected_string="{}|{}".format(
                 EnableCommandMode.PROMPT, ConfigCommandMode.PROMPT
             ),
             logger=logger,
@@ -99,7 +96,7 @@ class ConfigCommandMode(CommandMode):
         ) and retry < self.MAX_ENTER_CONFIG_MODE_RETRIES:
             output = session.hardware_expect(
                 ConfigCommandMode.ENTER_COMMAND,
-                expected_string="{0}|{1}".format(
+                expected_string="{}|{}".format(
                     EnableCommandMode.PROMPT, ConfigCommandMode.PROMPT
                 ),
                 logger=logger,

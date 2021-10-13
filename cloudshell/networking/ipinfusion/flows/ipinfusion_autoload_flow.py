@@ -1,20 +1,18 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 import os
-
-from cloudshell.shell.flows.autoload.basic_flow import AbstractAutoloadFlow
 
 from cloudshell.networking.ipinfusion.autoload.ipinfusion_generic_snmp_autoload import (
     IPInfusionGenericSNMPAutoload,
 )
+from cloudshell.shell.flows.autoload.basic_flow import AbstractAutoloadFlow
 
 
 class IPInfusionSnmpAutoloadFlow(AbstractAutoloadFlow):
     MIBS_FOLDER = os.path.join(os.path.dirname(__file__), os.pardir, "mibs")
 
     def __init__(self, logger, snmp_handler):
-        super(IPInfusionSnmpAutoloadFlow, self).__init__(logger)
+        super().__init__(logger)
         self._snmp_handler = snmp_handler
 
     def _autoload_flow(self, supported_os, resource_model):

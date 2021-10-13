@@ -1,15 +1,13 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-from cloudshell.snmp.snmp_configurator import (
-    EnableDisableSnmpConfigurator,
-    EnableDisableSnmpFlowInterface,
-)
-
 from cloudshell.networking.ipinfusion.flows.ipinfusion_disable_snmp_flow import (
     IPInfusionDisableSnmpFlow,
 )
 from cloudshell.networking.ipinfusion.flows.ipinfusion_enable_snmp_flow import (
     IPInfusionEnableSnmpFlow,
+)
+from cloudshell.snmp.snmp_configurator import (
+    EnableDisableSnmpConfigurator,
+    EnableDisableSnmpFlowInterface,
 )
 
 
@@ -26,7 +24,6 @@ class IPInfusionEnableDisableSnmpFlow(EnableDisableSnmpFlowInterface):
     def enable_snmp(self, snmp_parameters):
         IPInfusionEnableSnmpFlow(self._cli_handler, self._logger).enable_flow(
             snmp_parameters, self._resource_config.vrf_management_name
-
         )
 
     def disable_snmp(self, snmp_parameters):
@@ -41,6 +38,4 @@ class IPInfusionSnmpHandler(EnableDisableSnmpConfigurator):
         enable_disable_snmp_flow = IPInfusionEnableDisableSnmpFlow(
             self.cli_handler, logger, resource_config
         )
-        super(IPInfusionSnmpHandler, self).__init__(
-            enable_disable_snmp_flow, resource_config, logger
-        )
+        super().__init__(enable_disable_snmp_flow, resource_config, logger)

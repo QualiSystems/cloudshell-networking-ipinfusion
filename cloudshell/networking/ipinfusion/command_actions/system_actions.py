@@ -1,15 +1,12 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 from cloudshell.cli.command_template.command_template_executor import (
     CommandTemplateExecutor,
 )
-
 from cloudshell.networking.ipinfusion.command_templates import system
-from cloudshell.networking.ipinfusion.helpers.exceptions import IPInfusionBaseException
 
 
-class SystemActions(object):
+class SystemActions:
     def __init__(self, cli_service, logger):
         """General System actions."""
         self._cli_service = cli_service
@@ -21,6 +18,6 @@ class SystemActions(object):
 
     def create_folder(self, folder_path):
         """Commit changes."""
-        CommandTemplateExecutor(self._cli_service,
-                                system.CREATE_FOLDER).execute_command(
-            folder_path=folder_path)
+        CommandTemplateExecutor(
+            self._cli_service, system.CREATE_FOLDER
+        ).execute_command(folder_path=folder_path)

@@ -1,17 +1,18 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 import re
 
 from cloudshell.snmp.autoload.snmp_system_info import SnmpSystemInfo
 
 
 class IPInfusionSnmpSystemInfo(SnmpSystemInfo):
-    SYS_DESCR_PATTERN = re.compile(r"Hardware Model:\s*(?P<model>\S+),"
-                                   r"\s*Software version:\s*(?P<os_name>\w+),"
-                                   r"\s*(?P<os_version>[^\s,]+)")
+    SYS_DESCR_PATTERN = re.compile(
+        r"Hardware Model:\s*(?P<model>\S+),"
+        r"\s*Software version:\s*(?P<os_name>\w+),"
+        r"\s*(?P<os_version>[^\s,]+)"
+    )
 
     def __init__(self, snmp_handler, logger, vendor=None):
-        super(IPInfusionSnmpSystemInfo, self).__init__(snmp_handler, logger, vendor)
+        super().__init__(snmp_handler, logger, vendor)
 
     def _get_vendor(self):
         """Get device vendor."""

@@ -1,17 +1,15 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 import re
 
 from cloudshell.cli.command_template.command_template_executor import (
     CommandTemplateExecutor,
 )
-
 from cloudshell.networking.ipinfusion.command_templates import enable_disable_snmp
 from cloudshell.networking.ipinfusion.helpers.exceptions import IPInfusionSNMPException
 
 
-class EnableDisableSnmpActions(object):
+class EnableDisableSnmpActions:
     def __init__(self, cli_service, logger):
         """Enable Disable Snmp actions."""
         self._cli_service = cli_service
@@ -19,15 +17,14 @@ class EnableDisableSnmpActions(object):
 
     def current_snmp_configuration(self):
         """Show SNMP configuration."""
-
         output = CommandTemplateExecutor(
             self._cli_service, enable_disable_snmp.SHOW_SNMP_CONFIGURATION
         ).execute_command()
 
-        users = list(set(re.findall(r"snmp-server user\s+(?P<user>\w+)",
-                                    output)))
-        communities = list(set(re.findall(r"snmp-server community\s+(?P<community>\w+)",
-                                          output)))
+        users = list(set(re.findall(r"snmp-server user\s+(?P<user>\w+)", output)))
+        communities = list(
+            set(re.findall(r"snmp-server community\s+(?P<community>\w+)", output))
+        )
 
         return {"users": users, "communities": communities}
 
@@ -67,9 +64,7 @@ class EnableDisableSnmpActions(object):
         """Configure SNMP v2c community."""
         output = CommandTemplateExecutor(
             self._cli_service, enable_disable_snmp.CONFIGURE_V2C_COMMUNITY
-        ).execute_command(community=community,
-                          view=view,
-                          vrf=vrf)
+        ).execute_command(community=community, view=view, vrf=vrf)
         if output.strip().startswith("%"):
             msg = "Configuration SNMP v2c community failed."
             self._logger.error(f"{msg} {output}")
@@ -86,23 +81,25 @@ class EnableDisableSnmpActions(object):
             raise IPInfusionSNMPException(msg)
 
     def configure_snmp_v3(
-            self,
-            snmp_user,
-            auth_protocol,
-            auth_pass,
-            priv_protocol,
-            priv_key,
-            vrf,
+        self,
+        snmp_user,
+        auth_protocol,
+        auth_pass,
+        priv_protocol,
+        priv_key,
+        vrf,
     ):
         """Configure SNMP v3."""
         output = CommandTemplateExecutor(
             self._cli_service, enable_disable_snmp.CONFIGURE_V3_USER
-        ).execute_command(snmp_user=snmp_user,
-                          auth_protocol=auth_protocol,
-                          auth_pass=auth_pass,
-                          priv_protocol=priv_protocol,
-                          priv_key=priv_key,
-                          vrf=vrf)
+        ).execute_command(
+            snmp_user=snmp_user,
+            auth_protocol=auth_protocol,
+            auth_pass=auth_pass,
+            priv_protocol=priv_protocol,
+            priv_key=priv_key,
+            vrf=vrf,
+        )
         if output.strip().startswith("%"):
             msg = "Configuration SNMP v3 failed."
             self._logger.error(f"{msg} {output}")
