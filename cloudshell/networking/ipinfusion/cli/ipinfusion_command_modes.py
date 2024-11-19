@@ -72,7 +72,7 @@ class ConfigCommandMode(CommandMode):
         )
 
     def enter_action_map(self):
-        return {fr"{EnableCommandMode.PROMPT}.*$": self._check_config_mode}
+        return {rf"{EnableCommandMode.PROMPT}.*$": self._check_config_mode}
 
     def exit_action_map(self):
         return {self.PROMPT: lambda session, logger: session.send_line("exit", logger)}
