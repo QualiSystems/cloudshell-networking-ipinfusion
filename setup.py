@@ -19,5 +19,6 @@ setup(
     version=read_file("version.txt"),
     package_data={"": ["*.txt"]},
     description="QualiSystems networking IP Infusion specific Package",
+    long_description="QualiSystems networking IP Infusion specific Package",
     include_package_data=True,
 )
