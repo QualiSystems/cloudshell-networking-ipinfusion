@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from setuptools import find_packages, setup
 
 
@@ -7,7 +8,7 @@ def read_file(file_name: str) -> str:
 
 
 setup(
-    name="cloudshell-template",
+    name="cloudshell-networking-ipinfusion",
     url="http://www.qualisystems.com/",
     author="QualiSystems",
     author_email="info@qualisystems.com",
@@ -17,6 +18,6 @@ setup(
     python_requires="~=3.7",
     version=read_file("version.txt"),
     package_data={"": ["*.txt"]},
-    description="<your package description>",
+    description="QualiSystems networking IP Infusion specific Package",
     include_package_data=True,
 )
